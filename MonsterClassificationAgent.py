@@ -1,18 +1,57 @@
 class MonsterClassificationAgent:
     def __init__(self):
-        #If you want to do any initial processing, add it here.
         pass
-
+    
     def solve(self, samples, new_monster):
-        #Add your code here!
-        #
-        #The first parameter to this method will be a labeled list of samples in the form of
-        #a list of 2-tuples. The first item in each 2-tuple will be a dictionary representing
-        #the parameters of a particular monster. The second item in each 2-tuple will be a
-        #boolean indicating whether this is an example of this species or not.
-        #
-        #The second parameter will be a dictionary representing a newly observed monster.
-        #
-        #Your function should return True or False as a guess as to whether or not this new
-        #monster is an instance of the same species as that represented by the list.
-        pass
+        positive_traits = {
+            'size': [], 
+            'color': [],
+            'covering': [],
+            'foot-type': [],
+            'leg-count': [], 
+            'arm-count': [], 
+            'eye-count': [], 
+            'horn-count': [],
+            'lays-eggs': [], 
+            'has-wings': [], 
+            'has-gills': [],
+            'has-tail': []
+        }
+        negative_traits = {
+            'size': [], 
+            'color': [],
+            'covering': [],
+            'foot-type': [],
+            'leg-count': [], 
+            'arm-count': [], 
+            'eye-count': [], 
+            'horn-count': [],
+            'lays-eggs': [], 
+            'has-wings': [], 
+            'has-gills': [],
+            'has-tail': []
+        }
+        for monster in samples:
+            for attribute in monster[0]:
+                if monster[1] == True:
+                    positive_traits[attribute].append(monster[0][attribute])  
+                else:
+                    negative_traits[attribute].append(monster[0][attribute])  
+        
+        for attribute in positive_traits:
+            positive_traits[attribute] = list(set(positive_traits[attribute]))
+        for attribute in negative_traits:
+            negative_traits[attribute] = list(set(negative_traits[attribute]))
+
+        is_positive = True
+        for attribute in new_monster:
+            if is_positive == True and new_monster[attribute] in positive_traits[attribute]:
+                is_positive = True
+            elif new_monster[attribute] in negative_traits[attribute]:
+                is_negative = True
+                is_positive = False
+        
+        if is_positive:
+            return True
+        if is_negative:
+            return False
